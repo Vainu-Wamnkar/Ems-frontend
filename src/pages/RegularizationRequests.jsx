@@ -12,7 +12,7 @@ const RegularizationRequests = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "http://localhost:5000/api/regularization/all",
+        "https://ems-backend-ofjk.onrender.com/api/regularization/all",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -44,7 +44,7 @@ const RegularizationRequests = () => {
       setProcessingId(id);
 
       await axios.put(
-        `http://localhost:5000/api/regularization/${id}`,
+        `https://ems-backend-ofjk.onrender.com/api/regularization/${id}`,
         { status },
         {
           headers: {

@@ -12,7 +12,7 @@ const RegulizationForm = ({ selectedDate, onClose }) => {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5000/api/regularization",
+        "https://ems-backend-ofjk.onrender.com/api/regularization",
         {
           date: selectedDate,
           reason: e.target.reason.value,

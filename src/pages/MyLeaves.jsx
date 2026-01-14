@@ -17,7 +17,7 @@ const MyLeaves = () => {
   // Fetch logged-in user's leaves
   const fetchMyLeaves = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/leaves/my", {
+      const res = await axios.get("https://ems-backend-ofjk.onrender.com/api/leaves/my", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -15,7 +15,7 @@ const DeleteDepartment = ({ departmentId, onSuccess }) => {
       setLoading(true);
 
       await axios.delete(
-        `http://localhost:5000/api/departments/${departmentId}`,
+        `https://ems-backend-ofjk.onrender.com/api/departments/${departmentId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
