@@ -41,7 +41,7 @@ const LeaveRequests = () => {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/leaves/${id}`,
+        `https://ems-backend-ofjk.onrender.com/api/leaves/${id}`,
         { status },
         {
           headers: {

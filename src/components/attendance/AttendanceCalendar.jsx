@@ -18,7 +18,7 @@ const AttendanceCalendar = () => {
   const fetchAttendanceForCalendar = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/attendance/me",
+        "https://ems-backend-ofjk.onrender.com/api/attendance/me",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -24,7 +24,7 @@ const AddEmployee = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://ems-backend-ofjk.onrender.com/api/auth/register",
         { name, email, password, role, phoneNumber, department }
       );
 

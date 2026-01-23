@@ -39,7 +39,7 @@ const Setting = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        "http://localhost:5000/api/users/change-password",
+        "https://ems-backend-ofjk.onrender.com/api/users/change-password",
         { oldPassword, newPassword },
         {
           headers: {
