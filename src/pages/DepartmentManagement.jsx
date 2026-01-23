@@ -12,7 +12,7 @@ const DepartmentManagement = () => {
   const fetchDepartments = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("https://ems-backend-ofjk.onrender.com/api/departments/all", {
+      const res = await axios.get("http://localhost:5000/api/departments/all", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

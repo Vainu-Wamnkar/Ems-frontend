@@ -17,7 +17,7 @@ const EmployeeCredentials = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "https://ems-backend-ofjk.onrender.com/api/auth/credentials",
+        "http://localhost:5000/api/auth/credentials",
         {
           headers: {
             Authorization: `Bearer ${token}`, // 👈 TOKEN YAHAN JATA HAI

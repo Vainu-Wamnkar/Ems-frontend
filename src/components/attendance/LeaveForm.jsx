@@ -10,7 +10,7 @@ const LeaveForm = ({ onClose }) => {
 
     try {
       const res = await axios.post(
-        "https://ems-backend-ofjk.onrender.com/api/leaves/apply",
+        "http://localhost:5000/api/leaves/apply",
         {
           startDate: formData.from,
           endDate: formData.to,

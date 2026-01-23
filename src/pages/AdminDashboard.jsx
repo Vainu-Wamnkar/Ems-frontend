@@ -33,13 +33,13 @@ const AdminDashboard = () => {
         const token = localStorage.getItem("token");
 
         const [empRes, deptRes, leaveRes] = await Promise.all([
-          axios.get("https://ems-backend-ofjk.onrender.com/api/employees", {
+          axios.get("http://localhost:5000/api/employees", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://ems-backend-ofjk.onrender.com/api/departments/all", {
+          axios.get("http://localhost:5000/api/departments/all", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("https://ems-backend-ofjk.onrender.com/api/leaves/all", {
+          axios.get("http://localhost:5000/api/leaves/all", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

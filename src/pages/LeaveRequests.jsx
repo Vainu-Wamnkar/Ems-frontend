@@ -19,7 +19,7 @@ const LeaveRequests = () => {
   // 🔹 Fetch leave requests
   const fetchLeaves = async () => {
     try {
-      let url = "https://ems-backend-ofjk.onrender.com/api/leaves/all";
+      let url = "http://localhost:5000/api/leaves/all";
       if (fromDate && toDate) {
         url += `?from=${fromDate}&to=${toDate}`;
       }
@@ -41,7 +41,7 @@ const LeaveRequests = () => {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `https://ems-backend-ofjk.onrender.com/api/leaves/${id}`,
+        `http://localhost:5000/api/leaves/${id}`,
         { status },
         {
           headers: {

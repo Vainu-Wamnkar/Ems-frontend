@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# kaha kaha api change karna hai file backend chalane ke liye
+# 1) Admin Dashboard 3 jagah, 2)AddEmployee 3)Create Department
+#  4)DeleteDepartment 5)Departmentmanagement 6)employeecredential
+#  7)leaverequiest 8)login 9)myleave 10)myregulization 11)regulizationrequiest
+#  12)Setting.jsx 13)attendancecalendar 14)Attendaceform
+# 15)leaveform
+

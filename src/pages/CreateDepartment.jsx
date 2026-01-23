@@ -26,7 +26,7 @@ const CreateDepartment = ({ onSuccess, onClose }) => {
       setLoading(true);
 
       await axios.post(
-        "https://ems-backend-ofjk.onrender.com/api/departments/add",
+        "http://localhost:5000/api/departments/add",
         { name: deptName, roles },
         {
           headers: {

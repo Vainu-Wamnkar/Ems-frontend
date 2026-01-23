@@ -93,7 +93,7 @@
             setLoading(true);
 
             await axios.post(
-              "https://ems-backend-ofjk.onrender.com/api/attendance/mark",
+              "http://localhost:5000/api/attendance/mark",
               {
                 date: selectedDate,
                 image: photo,

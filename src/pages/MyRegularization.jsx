@@ -8,7 +8,7 @@ const MyRegularization = () => {
   const fetchMyRegularization = async () => {
     try {
       const res = await axios.get(  
-        "https://ems-backend-ofjk.onrender.com/api/regularization/my",
+        "http://localhost:5000/api/regularization/my",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

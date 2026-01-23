@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 function ProfileDetails() {
   const [profileImage, setProfileImage] = useState(null);
   const {user}=useContext(AuthContext)
+  console.log(user)
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -63,7 +64,7 @@ function ProfileDetails() {
             <span className="font-semibold text-blue-900 w-40 inline-block">
               Phone:
             </span>{" "}
-            <span className="font-bold">{user.phoneNumber}</span>
+            <span className="font-bold">{user.phone}</span>
           </p>
           <p className="text-lg">
             <span className="font-semibold text-blue-900 w-40 inline-block">

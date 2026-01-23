@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await API.post(
-        "https://ems-backend-ofjk.onrender.com/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         { email, password }
       );
 
