@@ -36,11 +36,11 @@ export default function Login() {
     <div className="min-h-screen flex flex-col lg:flex-row bg-gradient-to-br from-blue-950 via-indigo-950 to-black">
 
       {/* LEFT UI */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-700 relative p-10 flex-col justify-center items-center text-white overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-700 relative p-4 lg:p-10 flex-col justify-center items-center text-white overflow-hidden">
         <div className="absolute top-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
 
-        <h1 className="text-5xl font-bold text-center leading-tight drop-shadow-lg">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center leading-tight drop-shadow-lg">
           Welcome to
           <br />
           <span className="text-yellow-300">
@@ -48,32 +48,32 @@ export default function Login() {
           </span>
         </h1>
 
-        <p className="mt-6 text-white/90 text-center text-lg w-3/4">
+        <p className="mt-4 sm:mt-6 text-white/90 text-center text-base sm:text-lg w-3/4">
           Smart and modern EMS System to manage employees with
           speed, accuracy, and efficiency.
         </p>
       </div>
 
       {/* RIGHT FORM */}
-      <div className="w-full lg:w-1/2 flex justify-center items-center px-4 sm:px-6 lg:px-10 relative">
+      <div className="w-full lg:w-1/2 flex justify-center items-center px-4 sm:px-6 lg:px-10 py-8 sm:py-10 lg:py-0 relative min-h-screen lg:min-h-screen">
 
         {/* Glow behind form */}
-        <div className="absolute w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute w-72 sm:w-96 h-72 sm:h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
 
         <form
           onSubmit={submit}
           className="
             relative
-            w-full max-w-md
+            w-full max-w-sm sm:max-w-md
             bg-transparent
-            p-8
+            p-6 sm:p-8
             rounded-2xl
             backdrop-blur-xl
             border border-white/20
             shadow-[0_0_40px_rgba(16,185,129,0.35)]
           "
         >
-          <h2 className="text-3xl font-bold text-center text-emerald-400 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-emerald-400 mb-8">
             EMS SYSTEM
           </h2>
 
@@ -86,7 +86,7 @@ export default function Login() {
               type="email"
               placeholder="Enter email"
               className="
-                w-full mt-2 p-3
+                w-full mt-2 p-2 sm:p-3
                 bg-transparent
                 border border-white/30
                 rounded-lg
@@ -103,7 +103,7 @@ export default function Login() {
           </div>
 
           {/* Password */}
-          <div className="mt-5">
+          <div className="mt-4 sm:mt-5">
             <label className="text-white/80 text-sm">
               Password
             </label>
@@ -111,7 +111,7 @@ export default function Login() {
               type="password"
               placeholder="Enter password"
               className="
-                w-full mt-2 p-3
+                w-full mt-2 p-2 sm:p-3
                 bg-transparent
                 border border-white/30
                 rounded-lg
@@ -142,7 +142,7 @@ export default function Login() {
           <button
             type="submit"
             className="
-              w-full mt-6 py-3
+              w-full mt-6 py-2 sm:py-3
               bg-emerald-500/90
               hover:bg-emerald-600
               text-white
