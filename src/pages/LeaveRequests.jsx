@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const LeaveRequests = () => {
+const LeaveRequests = ({ data }) => {
   const [leaves, setLeaves] = useState([]);
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
   const token = localStorage.getItem("token");
 
-  // Format date to DD-MM-YYYY
+  // 🔹 Sync props → state
+  useEffect(() => {
+    setLeaves(Array.isArray(data) ? data : []);
+  }, [data]);
+
+  // 🔹 Date formatter
   const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
     const d = new Date(dateStr);
     const day = String(d.getDate()).padStart(2, "0");
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -16,29 +20,15 @@ const LeaveRequests = () => {
     return `${day}-${month}-${year}`;
   };
 
-  // 🔹 Fetch leave requests
-  const fetchLeaves = async () => {
-    try {
-      let url = "http://localhost:5000/api/leaves/all";
-      if (fromDate && toDate) {
-        url += `?from=${fromDate}&to=${toDate}`;
-      }
-
-      const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setLeaves(res.data.data || res.data);
-      console.log("Leaves:", res.data);
-    } catch (err) {
-      console.error(err.response ? err.response.data : err);
-    }
-  };
-
-  // 🔹 Update leave status
+  // 🔹 Approve / Reject logic
   const updateStatus = async (id, status) => {
+    // Optimistic UI
+    setLeaves((prev) =>
+      prev.map((l) =>
+        l._id === id ? { ...l, status } : l
+      )
+    );
+
     try {
       await axios.put(
         `https://ems-backend-ofjk.onrender.com/api/leaves/${id}`,
@@ -49,51 +39,65 @@ const LeaveRequests = () => {
           },
         }
       );
-
-      // Frontend state update
-      setLeaves((prev) =>
-        prev.map((l) => (l._id === id ? { ...l, status } : l))
-      );
     } catch (err) {
       console.error(err);
+      alert("Status update failed");
     }
   };
 
-  useEffect(() => {
-    fetchLeaves();
-  }, []);
+  // 🔹 Button renderer (FINAL LOGIC)
+  const renderActionButton = (l) => {
+    // ✅ Pending → 50 / 50
+    if (l.status === "Pending") {
+      return (
+        <>
+          <button
+            onClick={() => updateStatus(l._id, "Approved")}
+            className="w-1/2 bg-green-500 text-white py-2 rounded flex items-center justify-center"
+          >
+            Approve
+          </button>
+          <button
+            onClick={() => updateStatus(l._id, "Rejected")}
+            className="w-1/2 bg-red-500 text-white py-2 rounded flex items-center justify-center"
+          >
+            Reject
+          </button>
+        </>
+      );
+    }
+
+    // ✅ Approved → 100%
+    if (l.status === "Approved") {
+      return (
+        <button
+          disabled
+          className="w-full bg-green-500 text-white py-2 rounded opacity-60 cursor-not-allowed flex items-center justify-center"
+        >
+          Approved
+        </button>
+      );
+    }
+
+    // ✅ Rejected → 100%
+    if (l.status === "Rejected") {
+      return (
+        <button
+          disabled
+          className="w-full bg-red-500 text-white py-2 rounded opacity-60 cursor-not-allowed flex items-center justify-center"
+        >
+          Rejected
+        </button>
+      );
+    }
+  };
 
   return (
     <>
-      {/* md+ (desktop/table) - unchanged layout */}
+      {/* ================= DESKTOP VIEW ================= */}
       <div className="hidden md:block p-6">
         <h3 className="text-lg font-semibold mb-4">Leave Requests</h3>
 
-        {/* Date filter */}
-        <div className="mb-4 flex items-center gap-2">
-          <label>From:</label>
-          <input
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-            className="border p-1 rounded"
-          />
-          <label>To:</label>
-          <input
-            type="date"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-            className="border p-1 rounded"
-          />
-          <button
-            onClick={fetchLeaves}
-            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-          >
-            Filter
-          </button>
-        </div>
-
-        {/* Leave table */}
         <table className="w-full bg-white rounded-lg shadow">
           <thead className="bg-gray-100">
             <tr className="text-left text-sm text-gray-600">
@@ -101,109 +105,69 @@ const LeaveRequests = () => {
               <th className="p-3">Reason</th>
               <th className="p-3">Date</th>
               <th className="p-3">Status</th>
-              <th className="p-3 text-center">Actions</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {leaves.map((l) => (
-              <tr key={l._id} className="border-t text-sm">
-                <td className="p-3">{l.user?.name}</td>
-                <td className="p-3">{l.reason}</td>
-                <td className="p-3">
-                  {formatDate(l.startDate)} to {formatDate(l.endDate)}
-                </td>
-                <td className="p-3">{l.status}</td>
-
-                <td className="p-3 text-center space-x-2">
-                  {l.status === "Pending" && (
-                    <>
-                      <button
-                        onClick={() => updateStatus(l._id, "Approved")}
-                        className="bg-green-500 text-white px-3 py-1 rounded"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => updateStatus(l._id, "Rejected")}
-                        className="bg-red-500 text-white px-3 py-1 rounded"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  )}
+            {leaves.length > 0 ? (
+              leaves.map((l) => (
+                <tr key={l._id} className="border-t text-sm">
+                  <td className="p-3">{l.user?.name}</td>
+                  <td className="p-3">{l.reason}</td>
+                  <td className="p-3">
+                    {formatDate(l.startDate)} to{" "}
+                    {formatDate(l.endDate)}
+                  </td>
+                  <td className="p-3">{l.status}</td>
+                  <td className="p-3">
+                    <div className="flex gap-2">
+                      {renderActionButton(l)}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center p-4">
+                  No leave requests found
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* Mobile (< md) - stacked filters + card list */}
+      {/* ================= MOBILE VIEW ================= */}
       <div className="md:hidden p-4">
-        <h3 className="text-lg font-semibold mb-4">Leave Requests</h3>
-
-        <div className="mb-4 flex flex-col gap-2">
-          <div className="flex flex-col">
-            <label className="text-sm">From:</label>
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              className="border p-1 rounded w-full"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-sm">To:</label>
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="border p-1 rounded w-full"
-            />
-          </div>
-
-          <button
-            onClick={fetchLeaves}
-            className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 w-full"
-          >
-            Filter
-          </button>
-        </div>
+        <h3 className="text-lg font-semibold mb-4">
+          Leave Requests
+        </h3>
 
         <div className="space-y-3">
           {leaves.map((l) => (
-            <div key={l._id} className="bg-white rounded-lg shadow p-3 border">
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="font-semibold text-sm">{l.user?.name}</div>
-                  <div className="text-sm text-gray-700 mt-1">{l.reason}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {formatDate(l.startDate)} to {formatDate(l.endDate)}
-                  </div>
-                  <div className="text-xs mt-1">
-                    <span className="font-medium">Status:</span> {l.status}
-                  </div>
-                </div>
+            <div
+              key={l._id}
+              className="bg-white rounded-lg shadow p-3 border"
+            >
+              <div className="font-semibold text-sm">
+                {l.user?.name}
+              </div>
+              <div className="text-sm text-gray-700 mt-1">
+                {l.reason}
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                {formatDate(l.startDate)} to{" "}
+                {formatDate(l.endDate)}
+              </div>
+              <div className="text-xs mt-1">
+                <span className="font-medium">Status:</span>{" "}
+                {l.status}
               </div>
 
-              {l.status === "Pending" && (
-                <div className="mt-3 flex flex-col sm:flex-row gap-2">
-                  <button
-                    onClick={() => updateStatus(l._id, "Approved")}
-                    className="w-full sm:w-auto bg-green-500 text-white px-3 py-2 rounded"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => updateStatus(l._id, "Rejected")}
-                    className="w-full sm:w-auto bg-red-500 text-white px-3 py-2 rounded"
-                  >
-                    Reject
-                  </button>
-                </div>
-              )}
+              <div className="mt-3 flex gap-2">
+                {renderActionButton(l)}
+              </div>
             </div>
           ))}
         </div>
